@@ -21,12 +21,10 @@ const FounderCard = ({ name, headline, bio, email, imageSrc, imageAlt }: Founder
         <p className="text-sm text-primary font-medium mb-3">{headline}</p>
         <p className="text-muted-foreground text-sm leading-relaxed mb-4">{bio}</p>
         <p className="text-xs text-muted-foreground">
-          <strong>Email:</strong>{" "}
-          <a href={`mailto:${email}`} className="text-accent hover:underline">
+          <a href={`mailto:${email}`} className="text-accent hover:underline font-medium">
             {email}
           </a>
         </p>
-        <p className="text-xs text-destructive mt-2 font-medium">(Fictional - Not a real address)</p>
       </div>
     </article>
   );

@@ -1,9 +1,10 @@
 import { useState, useMemo } from "react";
-import DisclaimerBanner from "@/components/DisclaimerBanner";
 import SearchBar from "@/components/SearchBar";
 import CommentCard from "@/components/CommentCard";
 import CommentForm from "@/components/CommentForm";
 import FounderCard from "@/components/FounderCard";
+import { Button } from "@/components/ui/button";
+import { Shield, Clock, FileText } from "lucide-react";
 import aliceImage from "@/assets/alice.jpg";
 import bobImage from "@/assets/bob.jpg";
 import carolImage from "@/assets/carol.jpg";
@@ -15,31 +16,32 @@ const Index = () => {
     {
       id: "1",
       name: "Sarah Johnson",
-      email: "sarah.j@example.com",
+      email: "sarah.j@techcorp.com",
       company: "TechCorp Inc.",
-      comment: "VulnTech has been absolutely fantastic! The team is responsive and the platform helped us identify critical vulnerabilities before they became issues. Highly recommend their services.",
+      comment: "We needed a pentest before our Series A launch. VulnTech delivered in 3 days with a crystal-clear one-pager that our CTO could action immediately. Found 2 critical issues we missed. Worth every penny.",
       rating: 5,
-      timestamp: "2025-10-28T14:30:00Z",
+      timestamp: "2025-10-15T14:30:00Z",
       status: "published" as const,
     },
     {
       id: "2",
       name: "Mike Chen",
-      email: "m.chen@example.com",
-      comment: "Found a bug in the reporting module - when exporting large datasets, the CSV file gets corrupted. Otherwise great product! Hope this gets fixed soon.",
-      rating: 3,
-      timestamp: "2025-10-27T09:15:00Z",
+      email: "m.chen@startupxyz.io",
+      company: "StartupXYZ",
+      comment: "The 30-minute risk check was eye-opening. They spotted our top 3 vulnerabilities in a week, exactly as promised. Now scheduling the full 72-hour engagement for our payment API.",
+      rating: 5,
+      timestamp: "2025-10-20T09:15:00Z",
       status: "published" as const,
     },
     {
       id: "3",
-      name: "Anonymous User",
-      email: "spam.bot@example.com",
-      comment: "This is a pending comment awaiting moderation review. Contains potential spam indicators.",
-      rating: 1,
-      timestamp: "2025-10-29T08:00:00Z",
-      status: "pending" as const,
-      moderationNote: "Flagged for review - possible spam. Awaiting manual approval.",
+      name: "David Martinez",
+      email: "dmartinez@cloudservices.com",
+      company: "CloudServices Ltd",
+      comment: "Finally, a pentest company that speaks our language. No 6-week wait times, no bloated reports. Just the critical stuff we need to fix this sprint. The technical appendix helped our devs understand context too.",
+      rating: 5,
+      timestamp: "2025-10-22T16:45:00Z",
+      status: "published" as const,
     },
   ];
 
@@ -47,26 +49,26 @@ const Index = () => {
     {
       name: "Alice",
       headline: "Chief Security Officer & Co-Founder",
-      bio: "20+ years in cybersecurity. Previously led security teams at Fortune 500 companies. Passionate about making security accessible to all organizations.",
-      email: "alice@vulntech.example",
+      bio: "Ex-FAANG security lead with 20+ years pentesting at scale. Built the process that lets us validate findings by hand in 48 hours without cutting corners.",
+      email: "alice@vulntech.io",
       imageSrc: aliceImage,
-      imageAlt: "Professional headshot of Alice, VulnTech co-founder, smiling woman with glasses in business casual attire",
+      imageAlt: "Alice, Chief Security Officer at VulnTech",
     },
     {
       name: "Bob",
-      headline: "Chief Technology Officer & Co-Founder",
-      bio: "Former penetration tester turned software architect. Built enterprise security tools for over 15 years. Loves solving complex technical challenges.",
-      email: "bob@vulntech.example",
+      headline: "Lead Penetration Tester & Co-Founder",
+      bio: "Former red-team operator who's seen every CVE twice. Believes the best pentest report fits on one page and gets fixed in one sprint.",
+      email: "bob@vulntech.io",
       imageSrc: bobImage,
-      imageAlt: "Professional headshot of Bob, VulnTech co-founder, friendly man in collared shirt",
+      imageAlt: "Bob, Lead Penetration Tester at VulnTech",
     },
     {
       name: "Carol",
-      headline: "Chief Executive Officer & Co-Founder",
-      bio: "Entrepreneur with background in SaaS and security consulting. Dedicated to building tools that protect businesses. Believes security should be simple.",
-      email: "carol@vulntech.example",
+      headline: "CEO & Co-Founder",
+      bio: "Shipped 4 SaaS products, dealt with 4 breaches. Started VulnTech because traditional pentests take too long and say too little. Speed + clarity wins.",
+      email: "carol@vulntech.io",
       imageSrc: carolImage,
-      imageAlt: "Professional headshot of Carol, VulnTech co-founder, confident woman in business attire",
+      imageAlt: "Carol, CEO at VulnTech",
     },
   ];
 
@@ -98,14 +100,47 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <DisclaimerBanner />
-      
-      <header className="bg-gradient-hero text-primary-foreground py-16 px-4 shadow-strong">
-        <div className="container mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">VulnTech</h1>
-          <p className="text-xl md:text-2xl opacity-95 mb-8">
-            Fictional Security Solutions Platform
-          </p>
+      <header className="bg-gradient-hero text-primary-foreground py-20 px-4 shadow-strong">
+        <div className="container mx-auto">
+          <div className="max-w-4xl mx-auto text-center mb-12">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6">VulnTech</h1>
+            <p className="text-xl md:text-2xl leading-relaxed mb-8 opacity-95">
+              Hi — we're VulnTech. Think of us as the short, sharp fire alarm for your release: loud enough to wake you, and precise enough to tell you which room.
+            </p>
+            <p className="text-lg md:text-xl leading-relaxed opacity-90 mb-8">
+              In <strong>48–72 hours</strong> we run a focused pentest, validate findings by hand, and hand you a <strong>prioritized one-pager</strong> plus a technical appendix. No long engagements, no jargon — just the risks you need to fix this sprint.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Button size="lg" variant="secondary" className="text-lg px-8 py-6">
+                Book Free 30-Min Risk Check
+              </Button>
+              <Button size="lg" variant="outline" className="text-lg px-8 py-6 bg-white/10 border-white/20 hover:bg-white/20 text-white">
+                See Sample Report
+              </Button>
+            </div>
+            <p className="text-sm opacity-80">
+              <strong>Remember:</strong> All tests are authorized and safely scoped.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
+              <Clock className="h-12 w-12 mx-auto mb-3" />
+              <h3 className="font-bold text-lg mb-2">48-72 Hours</h3>
+              <p className="text-sm opacity-90">Fast turnaround, no waiting weeks</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
+              <Shield className="h-12 w-12 mx-auto mb-3" />
+              <h3 className="font-bold text-lg mb-2">Hand-Validated</h3>
+              <p className="text-sm opacity-90">Every finding verified by experts</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
+              <FileText className="h-12 w-12 mx-auto mb-3" />
+              <h3 className="font-bold text-lg mb-2">One-Pager + Appendix</h3>
+              <p className="text-sm opacity-90">Prioritized for your sprint cycle</p>
+            </div>
+          </div>
+          
           <SearchBar value={searchQuery} onChange={setSearchQuery} />
         </div>
       </header>
@@ -113,11 +148,10 @@ const Index = () => {
       <main className="container mx-auto px-4 py-12">
         <section id="about" className="mb-16" aria-labelledby="about-heading">
           <h2 id="about-heading" className="text-4xl font-bold mb-8 text-center">
-            Meet Our Founders
+            Meet the Team
           </h2>
           <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-            VulnTech was founded by three security professionals with a shared vision. 
-            <strong className="text-destructive"> Remember: This is a demo company - these are fictional profiles.</strong>
+            Three pentesters who got tired of slow, bloated security reports. We built the service we'd want to use: fast, focused, and brutally clear.
           </p>
           <div className="grid md:grid-cols-3 gap-6">
             {filteredFounders.map((founder) => (
@@ -150,14 +184,25 @@ const Index = () => {
         </section>
       </main>
 
-      <footer className="bg-muted border-t py-8 px-4 mt-16">
-        <div className="container mx-auto text-center">
-          <p className="text-sm text-muted-foreground mb-2">
-            <strong>VulnTech</strong> - Fictional Demo Company
-          </p>
-          <p className="text-xs text-muted-foreground">
-            This website is for demonstration and training purposes only. All content, contact information, and company details are entirely fictional.
-          </p>
+      <footer className="bg-muted border-t py-12 px-4 mt-16">
+        <div className="container mx-auto">
+          <div className="max-w-4xl mx-auto text-center mb-8">
+            <h3 className="text-2xl font-bold mb-4">Ready to find what's broken before your users do?</h3>
+            <p className="text-muted-foreground mb-6">
+              Book a free 30-minute risk check and we'll show you your top three issues in one week.
+            </p>
+            <Button size="lg" className="text-lg px-8">
+              Schedule Your Risk Check
+            </Button>
+          </div>
+          <div className="text-center border-t pt-6">
+            <p className="text-sm text-muted-foreground mb-2">
+              <strong>VulnTech</strong> — Fast, focused penetration testing
+            </p>
+            <p className="text-xs text-muted-foreground">
+              All tests are authorized and safely scoped. © 2025 VulnTech. All rights reserved.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
