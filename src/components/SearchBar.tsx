@@ -15,7 +15,7 @@ const SearchBar = ({ value, onChange }: SearchBarProps) => {
         placeholder="Search site content, Q&A, comments..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="pl-12 h-14 text-base shadow-medium border-2 focus-visible:ring-2 focus-visible:ring-primary"
+        className="pl-12 h-14 text-base text-primary shadow-medium border-2 focus-visible:ring-2 focus-visible:ring-primary"
         aria-label="Search site content and customer questions"
       />
     </div>

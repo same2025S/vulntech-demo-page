@@ -7,7 +7,17 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 
-const CommentForm = () => {
+interface CommentFormProps {
+  onSubmit: (comment: {
+    name: string;
+    email: string;
+    company?: string;
+    comment: string;
+    rating: number;
+  }) => void;
+}
+
+const CommentForm = ({ onSubmit }: CommentFormProps) => {
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [captchaChecked, setCaptchaChecked] = useState(false);
@@ -22,9 +32,20 @@ const CommentForm = () => {
       toast.error("Please provide a rating");
       return;
     }
-    // Placeholder: Form validation and submission
-    console.log("Form submitted - ready for server-side processing");
-    toast.success("Comment submitted for moderation");
+    
+    const formData = new FormData(e.currentTarget);
+    onSubmit({
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      company: formData.get("company") as string || undefined,
+      comment: formData.get("comment") as string,
+      rating,
+    });
+    
+    e.currentTarget.reset();
+    setRating(0);
+    setCaptchaChecked(false);
+    toast.success("Comment posted successfully!");
   };
 
   return (

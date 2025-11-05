@@ -11,8 +11,7 @@ import carolImage from "@/assets/carol.jpg";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
-
-  const sampleComments = [
+  const [comments, setComments] = useState([
     {
       id: "1",
       name: "Sarah Johnson",
@@ -43,40 +42,60 @@ const Index = () => {
       timestamp: "2025-10-22T16:45:00Z",
       status: "published" as const,
     },
-  ];
+  ]);
 
   const founders = [
     {
-      name: "Alice",
+      name: "Alice Wisemen",
       headline: "Chief Security Officer & Co-Founder",
       bio: "Ex-FAANG security lead with 20+ years pentesting at scale. Built the process that lets us validate findings by hand in 48 hours without cutting corners.",
-      email: "alice@vulntech.io",
+      email: "alicewisemen@vulntech.com",
       imageSrc: aliceImage,
-      imageAlt: "Alice, Chief Security Officer at VulnTech",
+      imageAlt: "Alice Wisemen, Chief Security Officer at VulnTech",
     },
     {
-      name: "Bob",
+      name: "Bob Backer",
       headline: "Lead Penetration Tester & Co-Founder",
       bio: "Former red-team operator who's seen every CVE twice. Believes the best pentest report fits on one page and gets fixed in one sprint.",
-      email: "bob@vulntech.io",
+      email: "bobbacker@vulntech.com",
       imageSrc: bobImage,
-      imageAlt: "Bob, Lead Penetration Tester at VulnTech",
+      imageAlt: "Bob Backer, Lead Penetration Tester at VulnTech",
     },
     {
-      name: "Carol",
+      name: "Carol Smith",
       headline: "CEO & Co-Founder",
       bio: "Shipped 4 SaaS products, dealt with 4 breaches. Started VulnTech because traditional pentests take too long and say too little. Speed + clarity wins.",
-      email: "carol@vulntech.io",
+      email: "csmith@vulntech.com",
       imageSrc: carolImage,
-      imageAlt: "Carol, CEO at VulnTech",
+      imageAlt: "Carol Smith, CEO at VulnTech",
     },
   ];
 
+  const handleCommentSubmit = (newComment: {
+    name: string;
+    email: string;
+    company?: string;
+    comment: string;
+    rating: number;
+  }) => {
+    const comment = {
+      id: Date.now().toString(),
+      name: newComment.name,
+      email: newComment.email,
+      company: newComment.company,
+      comment: newComment.comment,
+      rating: newComment.rating,
+      timestamp: new Date().toISOString(),
+      status: "published" as const,
+    };
+    setComments([comment, ...comments]);
+  };
+
   const filteredComments = useMemo(() => {
-    if (!searchQuery.trim()) return sampleComments;
+    if (!searchQuery.trim()) return comments;
     
     const query = searchQuery.toLowerCase();
-    return sampleComments.filter(
+    return comments.filter(
       (comment) =>
         comment.name.toLowerCase().includes(query) ||
         comment.comment.toLowerCase().includes(query) ||
@@ -166,7 +185,7 @@ const Index = () => {
           </h2>
           
           <div className="max-w-4xl mx-auto mb-12">
-            <CommentForm />
+            <CommentForm onSubmit={handleCommentSubmit} />
           </div>
 
           <div className="max-w-4xl mx-auto space-y-6">
