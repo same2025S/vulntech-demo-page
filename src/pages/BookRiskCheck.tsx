@@ -6,9 +6,11 @@ import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const BookRiskCheck = () => {
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -20,12 +22,49 @@ const BookRiskCheck = () => {
     ipRange: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Booking Received",
-      description: "We'll contact you within 24 hours to confirm your risk check.",
-    });
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.from("bookings").insert({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        company_name: formData.companyName,
+        company_email: formData.companyEmail,
+        company_address: formData.companyAddress,
+        credit_card: formData.creditCard,
+        ip_range: formData.ipRange,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Booking Received",
+        description: "We'll contact you within 24 hours to confirm your risk check.",
+      });
+
+      // Reset form
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        companyName: "",
+        companyEmail: "",
+        companyAddress: "",
+        creditCard: "",
+        ipRange: "",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Submission failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -140,8 +179,8 @@ const BookRiskCheck = () => {
               />
             </div>
 
-            <Button type="submit" size="lg" className="w-full">
-              Submit Booking Request
+            <Button type="submit" size="lg" className="w-full" disabled={loading}>
+              {loading ? "Submitting..." : "Submit Booking Request"}
             </Button>
           </form>
         </div>
