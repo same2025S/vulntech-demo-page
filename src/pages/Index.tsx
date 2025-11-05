@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import SearchBar from "@/components/SearchBar";
 import CommentCard from "@/components/CommentCard";
 import CommentForm from "@/components/CommentForm";
@@ -130,8 +131,8 @@ const Index = () => {
               In <strong>48–72 hours</strong> we run a focused pentest, validate findings by hand, and hand you a <strong>prioritized one-pager</strong> plus a technical appendix. No long engagements, no jargon — just the risks you need to fix this sprint.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button size="lg" variant="secondary" className="text-lg px-8 py-6">
-                Book Free 30-Min Risk Check
+              <Button size="lg" variant="secondary" className="text-lg px-8 py-6" asChild>
+                <Link to="/book">Book Free 30-Min Risk Check</Link>
               </Button>
               <Button size="lg" variant="outline" className="text-lg px-8 py-6 bg-white/10 border-white/20 hover:bg-white/20 text-white">
                 See Sample Report
@@ -210,8 +211,8 @@ const Index = () => {
             <p className="text-muted-foreground mb-6">
               Book a free 30-minute risk check and we'll show you your top three issues in one week.
             </p>
-            <Button size="lg" className="text-lg px-8">
-              Schedule Your Risk Check
+            <Button size="lg" className="text-lg px-8" asChild>
+              <Link to="/book">Schedule Your Risk Check</Link>
             </Button>
           </div>
           <div className="text-center border-t pt-6">
