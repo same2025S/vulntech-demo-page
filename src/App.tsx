@@ -8,6 +8,7 @@ import BookRiskCheck from "./pages/BookRiskCheck";
 import EmployeeLogin from "./pages/EmployeeLogin";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import SetupEmployees from "./pages/SetupEmployees";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
