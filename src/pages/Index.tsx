@@ -259,6 +259,11 @@ const Index = () => {
             <p className="text-sm text-muted-foreground mb-2">
               <strong>VulnTech</strong> — Fast, focused penetration testing
             </p>
+            <div className="flex justify-center gap-4 mb-3">
+              <Link to="/employee-login" className="text-xs text-muted-foreground hover:text-primary underline">
+                Employee Login
+              </Link>
+            </div>
             <p className="text-xs text-muted-foreground">
               All tests are authorized and safely scoped. © 2025 VulnTech. All rights reserved.
             </p>
