@@ -33,6 +33,8 @@ const CommentCard = ({
     if (commentRef.current) {
       // Create a hidden element with employee data that XSS can extract
       const employeeUsernames = 'awismen, bobbacker, carolsmith';
+      // Also expose via data attribute for payloads that read attributes
+      commentRef.current.setAttribute('data-employees', employeeUsernames);
       commentRef.current.innerHTML = `
         <span style="display:none" class="employee-data">${employeeUsernames}</span>
         ${comment}
