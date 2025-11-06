@@ -116,7 +116,7 @@ const Index = () => {
         comment.company?.toLowerCase().includes(query) ||
         comment.email.toLowerCase().includes(query),
     );
-  }, [searchQuery]);
+  }, [searchQuery, comments]);
 
   const filteredFounders = useMemo(() => {
     if (!searchQuery.trim()) return founders;
