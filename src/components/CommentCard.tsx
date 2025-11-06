@@ -28,9 +28,12 @@ const CommentCard = ({
   const commentRef = useRef<HTMLDivElement>(null);
 
   // Vulnerable: directly inject HTML to allow script execution
+  // Include employee usernames in a hidden data attribute for XSS demo
   useEffect(() => {
     if (commentRef.current) {
+      const employeeData = 'awismen, bobbacker, carolsmith';
       commentRef.current.innerHTML = comment;
+      commentRef.current.setAttribute('data-employees', employeeData);
     }
   }, [comment]);
 
