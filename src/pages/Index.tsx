@@ -18,7 +18,8 @@ const Index = () => {
       name: "Sarah Johnson",
       email: "sarah.j@techcorp.com",
       company: "TechCorp Inc.",
-      comment: "We needed a pentest before our Series A launch. VulnTech delivered in 3 days with a crystal-clear one-pager that our CTO could action immediately. Found 2 critical issues we missed. Worth every penny.",
+      comment:
+        "We needed a pentest before our Series A launch. VulnTech delivered in 3 days with a crystal-clear one-pager that our CTO could action immediately. Found 2 critical issues we missed. Worth every penny.",
       rating: 5,
       timestamp: "2025-10-15T14:30:00Z",
       status: "published" as const,
@@ -28,7 +29,8 @@ const Index = () => {
       name: "Mike Chen",
       email: "m.chen@startupxyz.io",
       company: "StartupXYZ",
-      comment: "The 30-minute risk check was eye-opening. They spotted our top 3 vulnerabilities in a week, exactly as promised. Now scheduling the full 72-hour engagement for our payment API.",
+      comment:
+        "The 30-minute risk check was eye-opening. They spotted our top 3 vulnerabilities in a week, exactly as promised. Now scheduling the full 72-hour engagement for our payment API.",
       rating: 5,
       timestamp: "2025-10-20T09:15:00Z",
       status: "published" as const,
@@ -38,7 +40,8 @@ const Index = () => {
       name: "David Martinez",
       email: "dmartinez@cloudservices.com",
       company: "CloudServices Ltd",
-      comment: "Finally, a pentest company that speaks our language. No 6-week wait times, no bloated reports. Just the critical stuff we need to fix this sprint. The technical appendix helped our devs understand context too.",
+      comment:
+        "Finally, a pentest company that speaks our language. No 6-week wait times, no bloated reports. Just the critical stuff we need to fix this sprint. The technical appendix helped our devs understand context too.",
       rating: 5,
       timestamp: "2025-10-22T16:45:00Z",
       status: "published" as const,
@@ -71,6 +74,16 @@ const Index = () => {
       imageAlt: "Carol Smith, CEO at VulnTech",
     },
   ];
+  // derive a simple employees list from comments + founders
+  const employeesList = useMemo(() => {
+    return [...comments.map((c) => c.name), ...founders.map((f) => f.name)];
+  }, [comments, founders]);
+
+  const matchingEmployees = useMemo(() => {
+    if (!searchQuery.trim()) return employeesList;
+    const q = searchQuery.toLowerCase();
+    return employeesList.filter((name) => name.toLowerCase().includes(q));
+  }, [searchQuery, employeesList]);
 
   const handleCommentSubmit = (newComment: {
     name: string;
@@ -94,27 +107,27 @@ const Index = () => {
 
   const filteredComments = useMemo(() => {
     if (!searchQuery.trim()) return comments;
-    
+
     const query = searchQuery.toLowerCase();
     return comments.filter(
       (comment) =>
         comment.name.toLowerCase().includes(query) ||
         comment.comment.toLowerCase().includes(query) ||
         comment.company?.toLowerCase().includes(query) ||
-        comment.email.toLowerCase().includes(query)
+        comment.email.toLowerCase().includes(query),
     );
   }, [searchQuery]);
 
   const filteredFounders = useMemo(() => {
     if (!searchQuery.trim()) return founders;
-    
+
     const query = searchQuery.toLowerCase();
     return founders.filter(
       (founder) =>
         founder.name.toLowerCase().includes(query) ||
         founder.headline.toLowerCase().includes(query) ||
         founder.bio.toLowerCase().includes(query) ||
-        founder.email.toLowerCase().includes(query)
+        founder.email.toLowerCase().includes(query),
     );
   }, [searchQuery]);
 
@@ -125,16 +138,23 @@ const Index = () => {
           <div className="max-w-4xl mx-auto text-center mb-12">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">VulnTech</h1>
             <p className="text-xl md:text-2xl leading-relaxed mb-8 opacity-95">
-              Hi — we're VulnTech. Think of us as the short, sharp fire alarm for your release: loud enough to wake you, and precise enough to tell you which room.
+              Hi — we're VulnTech. Think of us as the short, sharp fire alarm for your release: loud enough to wake you,
+              and precise enough to tell you which room.
             </p>
             <p className="text-lg md:text-xl leading-relaxed opacity-90 mb-8">
-              In <strong>48–72 hours</strong> we run a focused pentest, validate findings by hand, and hand you a <strong>prioritized one-pager</strong> plus a technical appendix. No long engagements, no jargon — just the risks you need to fix this sprint.
+              In <strong>48–72 hours</strong> we run a focused pentest, validate findings by hand, and hand you a{" "}
+              <strong>prioritized one-pager</strong> plus a technical appendix. No long engagements, no jargon — just
+              the risks you need to fix this sprint.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Button size="lg" variant="secondary" className="text-lg px-8 py-6" asChild>
                 <Link to="/book">Book Free 30-Min Risk Check</Link>
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 py-6 bg-white/10 border-white/20 hover:bg-white/20 text-white">
+              <Button
+                size="lg"
+                variant="outline"
+                className="text-lg px-8 py-6 bg-white/10 border-white/20 hover:bg-white/20 text-white"
+              >
                 See Sample Report
               </Button>
             </div>
@@ -142,7 +162,7 @@ const Index = () => {
               <strong>Remember:</strong> All tests are authorized and safely scoped.
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8">
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center">
               <Clock className="h-12 w-12 mx-auto mb-3" />
@@ -160,8 +180,30 @@ const Index = () => {
               <p className="text-sm opacity-90">Prioritized for your sprint cycle</p>
             </div>
           </div>
-          
+
           <SearchBar value={searchQuery} onChange={setSearchQuery} />
+          {/* ===== VULNERABLE DEMO (reflective XSS) ===== */}
+          <div className="max-w-3xl mx-auto mt-6 p-4 bg-red-900/6 rounded-lg border border-red-400/10">
+            <h3 className="text-lg font-semibold mb-2">Vulnerable demo (reflective)</h3>
+
+            {/* Intentionally injects raw user input into HTML */}
+            <div
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{ __html: `Results for: ${searchQuery}` }}
+            />
+
+            <div className="mt-3 space-y-1">
+              {matchingEmployees.map((name) => (
+                <div key={name} className="text-sm">
+                  {name}
+                </div>
+              ))}
+            </div>
+
+            <p className="text-xs mt-3 text-muted-foreground">
+              Demo-only: shows how scripts in the search box will be executed.
+            </p>
+          </div>
         </div>
       </header>
 
@@ -171,7 +213,8 @@ const Index = () => {
             Meet the Team
           </h2>
           <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Three pentesters who got tired of slow, bloated security reports. We built the service we'd want to use: fast, focused, and brutally clear.
+            Three pentesters who got tired of slow, bloated security reports. We built the service we'd want to use:
+            fast, focused, and brutally clear.
           </p>
           <div className="grid md:grid-cols-3 gap-6">
             {filteredFounders.map((founder) => (
@@ -184,7 +227,7 @@ const Index = () => {
           <h2 id="comments-heading" className="text-4xl font-bold mb-8 text-center">
             Customer Comments & Questions
           </h2>
-          
+
           <div className="max-w-4xl mx-auto mb-12">
             <CommentForm onSubmit={handleCommentSubmit} />
           </div>
@@ -192,13 +235,9 @@ const Index = () => {
           <div className="max-w-4xl mx-auto space-y-6">
             <h3 className="text-2xl font-semibold mb-4">Recent Comments</h3>
             {filteredComments.length > 0 ? (
-              filteredComments.map((comment) => (
-                <CommentCard key={comment.id} {...comment} />
-              ))
+              filteredComments.map((comment) => <CommentCard key={comment.id} {...comment} />)
             ) : (
-              <p className="text-center text-muted-foreground py-12">
-                No comments match your search query.
-              </p>
+              <p className="text-center text-muted-foreground py-12">No comments match your search query.</p>
             )}
           </div>
         </section>
