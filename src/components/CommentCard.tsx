@@ -61,7 +61,10 @@ const CommentCard = ({
         </Button>
       </div>
       
-      <p className="text-card-foreground mb-3 leading-relaxed">{comment}</p>
+      <div 
+        className="text-card-foreground mb-3 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: comment }}
+      />
       
       <time className="text-xs text-muted-foreground" dateTime={timestamp}>
         Posted: {new Date(timestamp).toLocaleString()}

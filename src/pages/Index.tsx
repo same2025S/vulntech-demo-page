@@ -182,29 +182,23 @@ const Index = () => {
           </div>
 
           <SearchBar value={searchQuery} onChange={setSearchQuery} />
-          {/*
-        ===== VULNERABLE DEMO (reflective XSS) =====
-        <div className="max-w-3xl mx-auto mt-6 p-4 bg-red-900/6 rounded-lg border border-red-400/10">
-          <h3 className="text-lg font-semibold mb-2">Vulnerable demo (reflective)</h3>
+          
+          {searchQuery && (
+            <div className="max-w-3xl mx-auto mt-6 p-4 bg-card rounded-lg border">
+              <div
+                dangerouslySetInnerHTML={{ __html: `Search results for: ${searchQuery}` }}
+              />
 
-          <div
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{ __html: `Results for: ${searchQuery}` }}
-          />
-
-          <div className="mt-3 space-y-1">
-            {matchingEmployees.map((name) => (
-              <div key={name} className="text-sm">
-                {name}
+              <div className="mt-3 space-y-1">
+                <p className="text-sm font-semibold mb-2">Matching employees:</p>
+                {matchingEmployees.map((name) => (
+                  <div key={name} className="text-sm">
+                    {name}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-
-          <p className="text-xs mt-3 text-muted-foreground">
-            Demo-only: shows how scripts in the search box will be executed.
-          </p>
-        </div>
-*/}
+            </div>
+          )}
         </div>
       </header>
 
