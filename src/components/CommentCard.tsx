@@ -1,6 +1,7 @@
 import { Flag, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useEffect, useRef } from "react";
 
 interface CommentCardProps {
   id: string;
@@ -24,6 +25,15 @@ const CommentCard = ({
   status,
   moderationNote,
 }: CommentCardProps) => {
+  const commentRef = useRef<HTMLDivElement>(null);
+
+  // Vulnerable: directly inject HTML to allow script execution
+  useEffect(() => {
+    if (commentRef.current) {
+      commentRef.current.innerHTML = comment;
+    }
+  }, [comment]);
+
   return (
     <article className="bg-card border rounded-lg p-6 shadow-soft hover:shadow-medium transition-all duration-300">
       <div className="flex items-start justify-between gap-4 mb-4">
@@ -62,8 +72,8 @@ const CommentCard = ({
       </div>
       
       <div 
+        ref={commentRef}
         className="text-card-foreground mb-3 leading-relaxed"
-        dangerouslySetInnerHTML={{ __html: comment }}
       />
       
       <time className="text-xs text-muted-foreground" dateTime={timestamp}>

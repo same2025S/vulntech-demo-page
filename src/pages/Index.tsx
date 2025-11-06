@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "@/components/SearchBar";
 import CommentCard from "@/components/CommentCard";
@@ -12,6 +12,7 @@ import carolImage from "@/assets/carol.jpg";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const searchResultsRef = useRef<HTMLDivElement>(null);
   const [comments, setComments] = useState([
     {
       id: "1",
@@ -84,6 +85,20 @@ const Index = () => {
     const q = searchQuery.toLowerCase();
     return employeesList.filter((name) => name.toLowerCase().includes(q));
   }, [searchQuery, employeesList]);
+
+  // Vulnerable: directly inject HTML to allow script execution
+  useEffect(() => {
+    if (searchResultsRef.current && searchQuery) {
+      const employeeList = matchingEmployees.map(name => `<div class="text-sm">${name}</div>`).join('');
+      searchResultsRef.current.innerHTML = `
+        <div>Search results for: ${searchQuery}</div>
+        <div class="mt-3 space-y-1">
+          <p class="text-sm font-semibold mb-2">Matching employees:</p>
+          ${employeeList}
+        </div>
+      `;
+    }
+  }, [searchQuery, matchingEmployees]);
 
   const handleCommentSubmit = (newComment: {
     name: string;
@@ -184,20 +199,10 @@ const Index = () => {
           <SearchBar value={searchQuery} onChange={setSearchQuery} />
           
           {searchQuery && (
-            <div className="max-w-3xl mx-auto mt-6 p-4 bg-card rounded-lg border">
-              <div
-                dangerouslySetInnerHTML={{ __html: `Search results for: ${searchQuery}` }}
-              />
-
-              <div className="mt-3 space-y-1">
-                <p className="text-sm font-semibold mb-2">Matching employees:</p>
-                {matchingEmployees.map((name) => (
-                  <div key={name} className="text-sm">
-                    {name}
-                  </div>
-                ))}
-              </div>
-            </div>
+            <div 
+              ref={searchResultsRef}
+              className="max-w-3xl mx-auto mt-6 p-4 bg-card rounded-lg border"
+            />
           )}
         </div>
       </header>
